@@ -1,0 +1,12 @@
+{
+  "name": "asan-office",
+  "private": true,
+  "scripts": {
+    "dev:word": "pnpm --filter asan-word dev",
+    "build:word": "pnpm --filter asan-word build",
+    "tauri:word": "pnpm --filter asan-word tauri dev"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
