@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --asan-blue: #0078d4;
+  --asan-green: #107c10;
+  --asan-orange: #d83b01;
+  --asan-red: #c43e1c;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #f3f2f1;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+/* Office Scrollbar Look */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8c8c8;
+  border: 3px solid #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a6a6a6;
+}
+
+.text-asan-blue { color: var(--asan-blue); }
+.bg-asan-blue { background-color: var(--asan-blue); }
+.border-asan-blue { border-color: var(--asan-blue); }
+
+.text-asan-green { color: var(--asan-green); }
+.bg-asan-green { background-color: var(--asan-green); }
+.border-asan-green { border-color: var(--asan-green); }
+
+.text-asan-orange { color: var(--asan-orange); }
+.bg-asan-orange { background-color: var(--asan-orange); }
+.border-asan-orange { border-color: var(--asan-orange); }
+
+.text-asan-red { color: var(--asan-red); }
+.bg-asan-red { background-color: var(--asan-red); }
+.border-asan-red { border-color: var(--asan-red); }

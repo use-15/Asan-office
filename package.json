@@ -2,11 +2,25 @@
   "name": "asan-office",
   "private": true,
   "scripts": {
-    "dev:word": "pnpm --filter asan-word dev",
-    "build:word": "pnpm --filter asan-word build",
-    "tauri:word": "pnpm --filter asan-word tauri dev"
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "shell": "pnpm --filter asan-shell dev",
+    "word": "pnpm --filter asan-word dev",
+    "sheet": "pnpm --filter asan-sheet dev",
+    "slide": "pnpm --filter asan-slide dev",
+    "pdf": "pnpm --filter asan-pdf dev",
+    "tauri": "tauri"
   },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss": "^3.4.1",
+    "lucide-react": "^0.333.0",
+    "@tauri-apps/cli": "^1.5.9"
   }
 }
