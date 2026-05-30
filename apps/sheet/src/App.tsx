@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Workbook } from 'fortune-sheet'
 import '@fortune-sheet/react/dist/index.css'
+import ExcelJS from 'exceljs'
 import { SheetRibbon } from './components/SheetRibbon'
 import { PivotTableManager } from './components/PivotTableManager'
 import {
@@ -43,24 +44,49 @@ export default function AsanSheet() {
     }
   ])
 
+  const handleExport = async () => {
+    const workbook = new ExcelJS.Workbook()
+    const worksheet = workbook.addWorksheet('Sheet1')
+
+    // Simple export of data
+    data[0].celldata?.forEach(cell => {
+      const r = (cell.r ?? 0) + 1
+      const c = (cell.c ?? 0) + 1
+      const row = worksheet.getRow(r)
+      const cellObj = row.getCell(c)
+
+      if (typeof cell.v === 'object') {
+        cellObj.value = cell.v.v ?? cell.v.m
+        if (cell.v.f) cellObj.value = { formula: cell.v.f.substring(1), result: cell.v.v }
+      } else {
+        cellObj.value = cell.v
+      }
+    })
+
+    const buffer = await workbook.xlsx.writeBuffer()
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = 'Asan_Budget_2024.xlsx'
+    link.click()
+  }
+
   return (
     <div className="flex flex-col h-full bg-[#f3f2f1] overflow-hidden font-sans text-gray-800">
-      <SheetRibbon />
+      <SheetRibbon onExport={handleExport} />
 
-      {/* Formula Bar */}
       <div className="h-9 bg-white border-b flex items-center px-2 space-x-2">
          <div className="w-16 h-6 border rounded bg-gray-50 flex items-center justify-center text-xs font-mono">B5</div>
          <div className="h-4 w-px bg-gray-300"></div>
          <div className="text-gray-400 italic text-sm px-2">fx</div>
-         <div className="flex-1 h-6 border rounded px-2 text-sm flex items-center font-mono">
-            <span className="text-blue-600">=SUM(</span>B2:B4<span className="text-blue-600">)</span>
+         <div className="flex-1 h-6 border rounded px-2 text-sm flex items-center font-mono text-green-700 font-bold">
+            =SUM(B2:B4)
          </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Left Action Bar */}
         <div className="w-10 bg-white border-r flex flex-col items-center py-4 space-y-4 shadow-sm z-10">
-          <button className="p-2 text-asan-green bg-green-50 rounded"><Search size={20} /></button>
+          <button className="p-2 text-asan-green bg-green-50 rounded shadow-sm"><Search size={20} /></button>
           <button onClick={() => setShowPivot(!showPivot)} className={`p-2 rounded ${showPivot ? 'text-asan-green bg-green-50' : 'text-gray-400 hover:bg-gray-100'}`} title="PivotTable">
             <Layers size={20} />
           </button>
@@ -70,7 +96,6 @@ export default function AsanSheet() {
           <button className="p-2 text-gray-400 hover:bg-gray-100"><Settings size={20} /></button>
         </div>
 
-        {/* Fortune Sheet Container */}
         <div className="flex-1 relative">
           <Workbook
             data={data}
@@ -84,44 +109,30 @@ export default function AsanSheet() {
           />
         </div>
 
-        {/* Pivot Sidebar */}
         {showPivot && <PivotTableManager onClose={() => setShowPivot(false)} />}
       </div>
 
-      {/* Sheet Status Bar */}
       <div className="h-6 bg-[#107c10] text-white flex items-center justify-between px-4 text-[10px] select-none z-20">
         <div className="flex items-center space-x-4">
-          <div className="flex items-center space-x-1 cursor-pointer hover:bg-white/10 px-1 rounded font-bold">
-             <span>Budget 2024</span>
-             <ChevronDown size={10} />
-          </div>
-          <span className="text-white/60">Ready</span>
-          <div className="flex items-center space-x-2 border-l border-white/20 pl-4">
-             <Database size={10} />
-             <span>Local Drive E:\</span>
-          </div>
+          <span className="font-bold">Budget 2024</span>
+          <span className="text-white/60 uppercase tracking-tighter border-l border-white/20 pl-4">Ready</span>
         </div>
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-3 bg-white/10 px-2 py-0.5 rounded">
              <span>Sum: 136,500</span>
-             <span className="opacity-40">|</span>
              <span>Count: 6</span>
-             <span className="opacity-40">|</span>
              <span>Avg: 22,750</span>
           </div>
           <div className="flex items-center space-x-4 border-l border-white/20 pl-4">
-            <LineChart size={12} className="cursor-pointer hover:scale-110" />
+            <LineChart size={12} className="cursor-pointer" />
             <span>100%</span>
-            <HelpCircle size={12} className="cursor-pointer" />
           </div>
         </div>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .fortune-container { width: 100% !important; height: 100% !important; font-family: inherit !important; }
-        .fortune-sheet-area { border: none !important; }
-        .fortune-row-header, .fortune-col-header { background: #f3f2f1 !important; color: #666 !important; }
-        .fortune-sheet-selection { border-color: #107c10 !important; }
+        .fortune-container { width: 100% !important; height: 100% !important; }
+        .fortune-sheet-selection { border-color: #107c10 !important; background: rgba(16, 124, 16, 0.1) !important; }
       `}} />
     </div>
   )
