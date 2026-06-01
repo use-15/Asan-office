@@ -2,6 +2,23 @@
 
 Asan Office is a high-performance, fully offline desktop productivity suite built with **Tauri**, **Rust**, and **React**. It offers feature parity with industry standards while ensuring 100% data privacy through local-only storage and AES-256 encryption.
 
+## 🖼️ Visual Overview
+
+| Dashboard | Asan Word |
+| :---: | :---: |
+| Clean entry point with quick launchers and recent document history. | Professional word processor with high-fidelity page rendering and Ribbon UI. |
+| [View Dashboard Design] | [View Word Design] |
+
+| Asan Sheet | Asan Slide |
+| :---: | :---: |
+| High-performance spreadsheet with 450+ functions and PivotTables. | Presentation editor with thumbnail navigation and motion transitions. |
+| [View Sheet Design] | [View Slide Design] |
+
+| Asan PDF |
+| :---: |
+| Secure PDF annotator with digital signatures and AES-256 hardening. |
+| [View PDF Design] |
+
 ## 🚀 Key Applications
 
 ### 📝 Asan Word
@@ -27,7 +44,7 @@ Asan Office is a high-performance, fully offline desktop productivity suite buil
 ## 🛠️ Architecture & Setup
 
 ### Requirements
-*   **Node.js**: v18+
+*   **Node.js**: v20+
 *   **Rust**: v1.70+ (for Tauri builds)
 *   **pnpm**: v8+
 
@@ -45,11 +62,8 @@ Asan Office is a high-performance, fully offline desktop productivity suite buil
     pnpm tauri dev
     ```
 
-### Monorepo Structure
-*   `apps/shell`: The main dashboard and application orchestrator.
-*   `apps/word|sheet|slide|pdf`: Isolated, high-fidelity productivity applications.
-*   `packages/asan-ui`: Shared design tokens and branding components.
-*   `src-tauri`: Rust backend for native system access and local security.
+### 📦 CI/CD & Releases
+The project includes a **GitHub Actions** workflow (`.github/workflows/release.yml`) that builds native binaries for Windows, macOS, and Linux on every version tag push.
 
 ## 🔒 Security & Privacy
 *   **No Cloud**: No data ever leaves your machine.
